@@ -20,14 +20,17 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Bobby
  */
 public class MainMenu extends BasicGameState {
-    private String TITLE = "Plese choose a simulation option...";
+    private String TITLE = "Plese choose an option...";
     private int rectWidth = 5, rectHeight = 10;
     private boolean rectOn = true;
-    private GameButton startButton;
+    private GameButton startButton, quitButton;
+    private Square square;
     
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        startButton = new GameButton(100, 30, "Start", Color.blue);
+        startButton = new GameButton(100, 30, "Start", Color.black);
+        quitButton = new GameButton(100, 30, "Quit", Color.black);
+        square = new Square(50, 50, 40, 40, Color.green);
     }
 
     @Override
@@ -37,6 +40,9 @@ public class MainMenu extends BasicGameState {
         g.fillRect(gc.getWidth()/2 + g.getFont().getWidth(TITLE)/2 + 5, gc.getHeight()/3, rectWidth, rectHeight);
         startButton.draw(gc.getWidth()/2 - startButton.getWidth()/2, gc.getHeight()/2 - 
                 startButton.getHeight()/2, g);
+        quitButton.draw(gc.getWidth()/2 - quitButton.getWidth()/2, gc.getHeight()/2 +
+                quitButton.getHeight(), g);
+        square.draw(g);
     }
 
     @Override
@@ -67,9 +73,14 @@ public class MainMenu extends BasicGameState {
         });
         timing.start();
         startButton.update(gc);
+        quitButton.update(gc);
+        square.update(gc);
+                
         
         if(startButton.isClicked()) {
             s.enterState(2);
+        }else if(quitButton.isClicked()) {
+            gc.exit();
         }
     }
     
@@ -77,5 +88,4 @@ public class MainMenu extends BasicGameState {
     public int getID() {
         return 1;
     }
-    
 }
