@@ -20,7 +20,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Bobby
  */
 public class MainMenu extends BasicGameState {
-    private String TITLE = "Plese choose an option...";
+    private String TITLE = "Plese choose a simulation option...";
     private int rectWidth = 5, rectHeight = 10;
     private boolean rectOn = true;
     private GameButton startButton;
