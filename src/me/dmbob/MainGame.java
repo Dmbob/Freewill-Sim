@@ -16,17 +16,19 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Bobby
  */
 public class MainGame extends BasicGameState{
-
-    
+    private WorldGrid world;
+    private Camera camera;
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        
+        world = new WorldGrid(0, 0, 1024, 1024);
+        camera = new Camera(0,0);
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        g.drawString("Main Game Goes Here", gc.getWidth()/2, gc.getWidth()/2);
+       camera.place(g);
+       world.draw(g);
     }
 
     @Override
@@ -34,6 +36,8 @@ public class MainGame extends BasicGameState{
         if(gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             s.enterState(1);
         }
+        camera.update(gc);
+        gc.getInput().clearKeyPressedRecord();
     }
     
     @Override

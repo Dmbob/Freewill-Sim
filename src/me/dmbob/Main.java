@@ -21,8 +21,9 @@ public class Main extends StateBasedGame {
     
     public static void main(String[] args) throws SlickException{
         AppGameContainer game = new AppGameContainer(new Main("Freewill Sim"));
-        game.setDisplayMode(800, 600, false);
+        game.setDisplayMode(1024, 768, false);
         game.setTargetFrameRate(60);
+        game.setSmoothDeltas(true);
         game.start();
     }
 

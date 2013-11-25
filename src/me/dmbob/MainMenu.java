@@ -26,13 +26,11 @@ public class MainMenu extends BasicGameState {
     private int rectWidth = 5, rectHeight = 10;
     private boolean rectOn = true;
     private GameButton startButton, quitButton;
-    private Being person;
     
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         startButton = new GameButton(100, 30, "Start", Color.black);
         quitButton = new GameButton(100, 30, "Quit", Color.black);
-        person = new Being(30, 30, 30, 30, "m");
     }
 
     @Override
@@ -44,7 +42,6 @@ public class MainMenu extends BasicGameState {
                 startButton.getHeight()/2, g);
         quitButton.draw(gc.getWidth()/2 - quitButton.getWidth()/2, gc.getHeight()/2 +
                 quitButton.getHeight(), g);
-        person.draw(g);
     }
 
     @Override
@@ -76,24 +73,7 @@ public class MainMenu extends BasicGameState {
         timing.start();
         startButton.update(gc);
         quitButton.update(gc);
-        Thread poop = new Thread(new Runnable() {
-            public void run() {
-                int num = new Random().nextInt(Direction.values().length);
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                person.move(Direction.values()[num]);
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        poop.start();
-        person.update(gc);
+        int num = new Random().nextInt(Direction.values().length);
         
         if(startButton.isClicked()) {
             s.enterState(2);

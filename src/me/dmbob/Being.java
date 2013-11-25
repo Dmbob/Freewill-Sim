@@ -32,31 +32,27 @@ public class Being {
         this.gender = gender;
     }
     
-    public void move(Direction d) {
+    public void move(Direction d, int delta) {
         
         if(d.equals(Direction.UP)) {
-            y-=MOVE_SPEED;
+            y-=MOVE_SPEED / delta;
             curX = x;
             curY = y;
         }
         if(d.equals(Direction.DOWN)) {
-            y+=MOVE_SPEED;
+            y+=MOVE_SPEED / delta;
             curX = x;
             curY = y;
         }
         if(d.equals(Direction.LEFT)) {
-            x-=MOVE_SPEED;
+            x-=MOVE_SPEED / delta;
             curX = x;
             curY = y;
         }
         if(d.equals(Direction.RIGHT)) {
-            x+=MOVE_SPEED;
+            x+=MOVE_SPEED / delta;
             curX = x;
             curY = y;
-        }
-        if(d.equals(Direction.STOP)) {
-            x = curX;
-            y = curY;
         }
     }
     
@@ -71,22 +67,10 @@ public class Being {
     
     public void mingle() {
         int pick = new Random().nextInt(Direction.values().length);
-        move(Direction.values()[pick]);
+        //move(Direction.values()[pick], );
     }
     
     public void update(GameContainer gc) {
-        /*if(x <= 0){ 
-            move(Direction.STOP);
-            move(Direction.RIGHT);
-        }else if(x >= gc.getWidth() - width) {
-            move(Direction.STOP);
-            move(Direction.LEFT);
-        }else if(y <= 0) {
-            move(Direction.STOP);
-            move(Direction.DOWN);
-        }else if(y >= gc.getHeight() - height) {
-            move(Direction.STOP);
-            move(Direction.UP);
-        }*/
+       
     }
 }
