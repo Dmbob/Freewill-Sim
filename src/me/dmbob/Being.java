@@ -21,22 +21,44 @@ public class Being {
     private int x, y, width, height;
     private String gender;
     private int curX = 0, curY = 0;
+    private WorldGrid world;
+    private GridTile tile;
     
-    public Being(int width, int height, String gender) {
+    public Being(int width, int height, String gender, WorldGrid world, GridTile tile) {
         this.width = width;
         this.height = height;
         this.gender = gender;
+        this.world = world;
     }
     
-    public void move(Direction d, WorldGrid tile) {
+    public void move(Direction d) {
+        tile = getAdjacentTile(d);
+    }
+    
+    public GridTile getAdjacentTile(Direction d) {
         if(d.equals(Direction.UP)) {
-            
+            return world.getTiles().get(x * 32).get((y - 1)*32);
         }
+        if(d.equals(Direction.DOWN)) {
+            return world.getTiles().get(x * 32).get((y + 1)*32);
+        }
+        if(d.equals(Direction.LEFT)) {
+            return world.getTiles().get((x - 1) * 32).get(y * 32);
+        }
+        if(d.equals(Direction.RIGHT)) {
+            return world.getTiles().get((x + 1) * 32).get(y * 32);
+        }
+        return null;
     }
     
-    public void draw(GridTile tile, Graphics g) {
+    public GridTile getCurTile() {
+        return world.getTiles().get(x * 32).get(y * 32);
+    }
+ 
+    public void draw(Graphics g) {
         this.x = x;
         this.y = y;
+        this.tile = tile;
         if(gender.equalsIgnoreCase("m")) {
             g.setColor(Color.blue);
         }else if(gender.equalsIgnoreCase("f")) {
@@ -54,6 +76,8 @@ public class Being {
     }
     
     public void update(GameContainer gc) {
-       
+        for(int i = 0; i < 100; i++) {
+            move(Direction.DOWN);
+        }
     }
 }

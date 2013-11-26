@@ -19,19 +19,20 @@ public class MainGame extends BasicGameState{
     private WorldGrid world;
     private Camera camera;
     private Being person;
+    private int playerX = 10, playerY = 1;
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         world = new WorldGrid(0, 0, 2048, 2048);
         camera = new Camera(-50, -50);
-        person = new Being(16, 16, "m");
+        person = new Being(16, 16, "m", world, world.getTiles().get(playerX*32).get(playerY*32));
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
        camera.place(g);
        world.draw(g);
-       person.draw(world.getTiles().get(32).get(32), g);
+       person.draw(g);
     }
 
     @Override
@@ -42,6 +43,7 @@ public class MainGame extends BasicGameState{
         camera.update(gc);
         gc.getInput().clearKeyPressedRecord();
     }
+   
     
     @Override
     public int getID() {
