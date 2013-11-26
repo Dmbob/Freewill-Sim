@@ -17,7 +17,7 @@ import org.newdawn.slick.Input;
  */
 public class Camera {
     private int CAM_SPEED = 10;
-    private int scale = 1;
+    private float scale = 1;
     private int x, y;
     
     public Camera(int x, int y) {
@@ -34,18 +34,21 @@ public class Camera {
         int scrollWheel = Mouse.getDWheel();
         if(gc.getInput().isKeyDown(Input.KEY_LEFT)) {
             x-=CAM_SPEED;
-        }else if(gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+        }
+        if(gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
             x+=CAM_SPEED;
-        }else if(gc.getInput().isKeyDown(Input.KEY_UP)) {
+        }
+        if(gc.getInput().isKeyDown(Input.KEY_UP)) {
             y-=CAM_SPEED;
-        }else if(gc.getInput().isKeyDown(Input.KEY_DOWN)) {
+        }
+        if(gc.getInput().isKeyDown(Input.KEY_DOWN)) {
             y+=CAM_SPEED;
         }
         
-        if (scrollWheel < 0  && scale >= 1) {
-            scale -= 1;
+        if (scrollWheel < 0) {
+            scale *= 0.5;
         }else if (scrollWheel > 0) {
-            scale+=1;
+            scale /= 0.5;
         }
     }
 }

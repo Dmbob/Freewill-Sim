@@ -18,56 +18,39 @@ import org.newdawn.slick.Graphics;
  * @author Bobby
  */
 public class Being {
-    private int MOVE_SPEED = 7;
-    private int MAX_DISTANCE = 20;
     private int x, y, width, height;
     private String gender;
     private int curX = 0, curY = 0;
     
-    public Being(int x, int y, int width, int height, String gender) {
-        this.x = x;
-        this.y = y;
+    public Being(int width, int height, String gender) {
         this.width = width;
         this.height = height;
         this.gender = gender;
     }
     
-    public void move(Direction d, int delta) {
-        
+    public void move(Direction d, WorldGrid tile) {
         if(d.equals(Direction.UP)) {
-            y-=MOVE_SPEED / delta;
-            curX = x;
-            curY = y;
-        }
-        if(d.equals(Direction.DOWN)) {
-            y+=MOVE_SPEED / delta;
-            curX = x;
-            curY = y;
-        }
-        if(d.equals(Direction.LEFT)) {
-            x-=MOVE_SPEED / delta;
-            curX = x;
-            curY = y;
-        }
-        if(d.equals(Direction.RIGHT)) {
-            x+=MOVE_SPEED / delta;
-            curX = x;
-            curY = y;
+            
         }
     }
     
-    public void draw(Graphics g) {
+    public void draw(GridTile tile, Graphics g) {
+        this.x = x;
+        this.y = y;
         if(gender.equalsIgnoreCase("m")) {
             g.setColor(Color.blue);
         }else if(gender.equalsIgnoreCase("f")) {
             g.setColor(Color.red);
         }
-        g.fillRect(x, y, width, height);
+        g.fillRect(tile.getX() + width/2, tile.getY() + height/2, width, height);
     }
     
-    public void mingle() {
-        int pick = new Random().nextInt(Direction.values().length);
-        //move(Direction.values()[pick], );
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
     }
     
     public void update(GameContainer gc) {

@@ -17,25 +17,31 @@ public class GridTile {
     private int x, y, width, height;
     private Being person;
     
-    public GridTile(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
+    public GridTile(int width, int height) {
+        
         this.width = width;
         this.height = height;
     }
     
-    public void draw(Graphics g) {
+    public void draw(int x, int y, Graphics g) {
+        this.x = x;
+        this.y = y;
         g.setColor(Color.white);
         g.fillRect(x, y, 32, 32);
         g.setColor(Color.black);
         g.drawRect(x - 1, y - 1, 32 + 2, 32 + 2);
-        if(person != null) {
-            person.draw(g);
-        }
     }
     
     public void setBeing(Being b) {
         person = b;
+    }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
     }
     
     public Being getBeing() {
