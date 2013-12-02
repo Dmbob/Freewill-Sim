@@ -8,6 +8,7 @@ package me.dmbob;
 
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -44,5 +45,13 @@ public class WorldGrid {
     
     public ArrayList<ArrayList<GridTile>> getTiles() {
         return tiles;
+    }
+    
+    public void update(GameContainer gc) {
+        for(int i = 0; i < tiles.size(); i+=32) {
+            for(int j = 0; j < tiles.get(i).size(); j+=32) {
+                tiles.get(i).get(j).update(gc);
+            }
+        }
     }
 }

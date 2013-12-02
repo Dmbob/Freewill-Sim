@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 /*
  * To change this template, choose Tools | Templates
@@ -22,49 +23,25 @@ public class Being {
     private String gender;
     private int curX = 0, curY = 0;
     private WorldGrid world;
-    private GridTile tile;
+    private GridTile curTile;
+    private GridTile newTile;
     
     public Being(int width, int height, String gender, WorldGrid world, GridTile tile) {
         this.width = width;
         this.height = height;
         this.gender = gender;
         this.world = world;
-    }
-    
-    public void move(Direction d) {
-        tile = getAdjacentTile(d);
-    }
-    
-    public GridTile getAdjacentTile(Direction d) {
-        if(d.equals(Direction.UP)) {
-            return world.getTiles().get(x * 32).get((y - 1)*32);
-        }
-        if(d.equals(Direction.DOWN)) {
-            return world.getTiles().get(x * 32).get((y + 1)*32);
-        }
-        if(d.equals(Direction.LEFT)) {
-            return world.getTiles().get((x - 1) * 32).get(y * 32);
-        }
-        if(d.equals(Direction.RIGHT)) {
-            return world.getTiles().get((x + 1) * 32).get(y * 32);
-        }
-        return null;
-    }
-    
-    public GridTile getCurTile() {
-        return world.getTiles().get(x * 32).get(y * 32);
+        this.curTile = tile;
+        newTile = curTile;
     }
  
     public void draw(Graphics g) {
-        this.x = x;
-        this.y = y;
-        this.tile = tile;
         if(gender.equalsIgnoreCase("m")) {
             g.setColor(Color.blue);
         }else if(gender.equalsIgnoreCase("f")) {
             g.setColor(Color.red);
         }
-        g.fillRect(tile.getX() + width/2, tile.getY() + height/2, width, height);
+        g.fillRect(curTile.getX() + width/2, curTile.getY() + height/2, width, height);
     }
     
     public int getX() {
@@ -76,8 +53,10 @@ public class Being {
     }
     
     public void update(GameContainer gc) {
-        for(int i = 0; i < 100; i++) {
-            move(Direction.DOWN);
-        }
+
+    }
+    
+    public String toString() {
+        return x + ", " + y;
     }
 }
