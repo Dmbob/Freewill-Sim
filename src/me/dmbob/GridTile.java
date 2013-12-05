@@ -16,6 +16,7 @@ import org.newdawn.slick.Graphics;
  */
 public class GridTile {
     private int x, y, width, height;
+    private Being person;
     
     public GridTile(int width, int height) {
         this.width = width;
@@ -29,14 +30,9 @@ public class GridTile {
         g.fillRect(x, y, 32, 32);
         g.setColor(Color.black);
         g.drawRect(x - 1, y - 1, 32 + 2, 32 + 2);
-    }
-    
-    public void setX(int x) {
-        this.x = x;
-    }
-    
-    public void setY(int y) {
-        this.y = y;
+        if(person != null) {
+            person.draw(this.x, this.y, g);
+        }
     }
     
     public int getX() {
@@ -47,9 +43,24 @@ public class GridTile {
         return y;
     }
     
-    /*public String toString() {
+    public void setPerson(Being b) {
+        person = b;
+    }
+    
+    public Being getPerson() {
+        if(person != null) {
+            return person;
+        }
+        return null;
+    }
+    
+    public void removePerson() {
+        this.person = null;
+    }
+    
+    public String toString() {
         return "[Being Location: " + person + ", Tile Location: " + x +", " + y + "]";
-    }*/
+    }
     
     public void update(GameContainer gc) {
     }

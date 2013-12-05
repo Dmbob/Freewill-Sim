@@ -73,7 +73,7 @@ public class MainMenu extends BasicGameState {
         timing.start();
         startButton.update(gc);
         quitButton.update(gc);
-        int num = new Random().nextInt(Direction.values().length);
+        int num = new Random().nextInt(Action.values().length);
         
         if(startButton.isClicked()) {
             s.enterState(2);

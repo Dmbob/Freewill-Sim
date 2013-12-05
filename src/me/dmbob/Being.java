@@ -24,7 +24,6 @@ public class Being {
     private int curX = 0, curY = 0;
     private WorldGrid world;
     private GridTile curTile;
-    private GridTile newTile;
     
     public Being(int width, int height, String gender, WorldGrid world, GridTile tile) {
         this.width = width;
@@ -32,16 +31,56 @@ public class Being {
         this.gender = gender;
         this.world = world;
         this.curTile = tile;
-        newTile = curTile;
     }
  
-    public void draw(Graphics g) {
+    public void draw(int x, int y, Graphics g) {
         if(gender.equalsIgnoreCase("m")) {
             g.setColor(Color.blue);
         }else if(gender.equalsIgnoreCase("f")) {
             g.setColor(Color.red);
         }
-        g.fillRect(curTile.getX() + width/2, curTile.getY() + height/2, width, height);
+        g.fillRect(x + width/2, y + height/2, width, height);
+    }
+
+    public void move(String d) {
+        GridTile newTile = null;
+        if(d.equalsIgnoreCase("up")) {
+           newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() - 32);
+           y-=32;
+        }
+        if(d.equalsIgnoreCase("down")) {
+           newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() + 32);
+           y+=32;
+        }
+        if(d.equalsIgnoreCase("left")) {
+           newTile = world.getTiles().get(getTile().getX() - 32).get(getTile().getY());
+           x-=32;
+        }
+        if(d.equalsIgnoreCase("right")) {
+           newTile = world.getTiles().get(getTile().getX() + 32).get(getTile().getY());
+           x+=32;
+        }
+        if(curTile == null || newTile == null) { return; }
+        curTile.removePerson();
+        newTile.setPerson(this);
+        System.out.println(newTile);
+        curTile = newTile; 
+    }
+    
+    public void act(Action a) {
+        world.getTiles().get(0).get(0).removePerson();
+        if(a.equals(Action.UP)) {
+            move("up");
+        }
+        if(a.equals(Action.DOWN)) {
+            move("down");
+        }
+        if(a.equals(Action.LEFT)) {
+            move("left");
+        }
+        if(a.equals(Action.RIGHT)) {
+            move("right");
+        }
     }
     
     public int getX() {
@@ -50,6 +89,10 @@ public class Being {
     
     public int getY() {
         return y;
+    }
+    
+    public GridTile getTile() {
+        return curTile;
     }
     
     public void update(GameContainer gc) {

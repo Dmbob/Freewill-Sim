@@ -8,10 +8,9 @@ package me.dmbob;
  *
  * @author Bobby
  */
-public enum Direction {
+public enum Action {
     UP,
     DOWN,
     LEFT,
-    RIGHT,
-    STOP;
+    RIGHT;
 }

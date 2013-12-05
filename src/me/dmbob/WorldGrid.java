@@ -7,9 +7,12 @@
 package me.dmbob;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 /**
  *
@@ -18,6 +21,7 @@ import org.newdawn.slick.Graphics;
 public class WorldGrid {
     private int x, y, width, height;
     private ArrayList<ArrayList<GridTile>> tiles;
+    private Being person;
     
     public WorldGrid(int x, int y, int width, int height) {
         tiles = new ArrayList<ArrayList<GridTile>>();
@@ -31,6 +35,7 @@ public class WorldGrid {
                 tiles.get(i).add(new GridTile(32, 32));
             }
         }
+        person = new Being(16, 16, "m", this, tiles.get(0).get(0));
     }
     
     public void draw(Graphics g) {
@@ -41,6 +46,7 @@ public class WorldGrid {
         }
         g.setColor(Color.green);
         g.drawRect(x - 1, y - 1, width + 2, height + 2);
+        tiles.get(0).get(0).setPerson(person);
     }
     
     public ArrayList<ArrayList<GridTile>> getTiles() {
@@ -52,6 +58,8 @@ public class WorldGrid {
             for(int j = 0; j < tiles.get(i).size(); j+=32) {
                 tiles.get(i).get(j).update(gc);
             }
+        }if(gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+            person.act(Action.DOWN);
         }
     }
 }
