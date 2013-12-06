@@ -31,7 +31,7 @@ public class GridTile {
         g.setColor(Color.black);
         g.drawRect(x - 1, y - 1, 32 + 2, 32 + 2);
         if(person != null) {
-            person.draw(this.x, this.y, g);
+            person.draw(g);
         }
     }
     

@@ -4,6 +4,8 @@
  */
 package me.dmbob;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -22,7 +24,7 @@ public class MainGame extends BasicGameState{
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        world = new WorldGrid(0, 0, 2048, 2048);
+        world = new WorldGrid(0, 0, 1024, 1024);
         camera = new Camera(-50, -50);
     }
 

@@ -33,33 +33,34 @@ public class Being {
         this.curTile = tile;
     }
  
-    public void draw(int x, int y, Graphics g) {
+    public void draw(Graphics g) {
         if(gender.equalsIgnoreCase("m")) {
             g.setColor(Color.blue);
         }else if(gender.equalsIgnoreCase("f")) {
             g.setColor(Color.red);
         }
-        g.fillRect(x + width/2, y + height/2, width, height);
+        g.fillRect(curTile.getX() + width/2, curTile.getY() + height/2, width, height);
     }
 
-    public void move(String d) {
+    public void move(final String dir) {
         GridTile newTile = null;
-        if(d.equalsIgnoreCase("up")) {
-           newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() - 32);
-           y-=32;
+        try {
+            if(dir.equalsIgnoreCase("up")) {
+            newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() - 32);          
+            }
+            if(dir.equalsIgnoreCase("down")) {
+                newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() + 32);         
+            }
+            if(dir.equalsIgnoreCase("left")) {
+                newTile = world.getTiles().get(getTile().getX() - 32).get(getTile().getY());
+            }
+            if(dir.equalsIgnoreCase("right")) {
+                newTile = world.getTiles().get(getTile().getX() + 32).get(getTile().getY());
+            }
+        }catch(Exception ex) {
+             newTile = null;
         }
-        if(d.equalsIgnoreCase("down")) {
-           newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() + 32);
-           y+=32;
-        }
-        if(d.equalsIgnoreCase("left")) {
-           newTile = world.getTiles().get(getTile().getX() - 32).get(getTile().getY());
-           x-=32;
-        }
-        if(d.equalsIgnoreCase("right")) {
-           newTile = world.getTiles().get(getTile().getX() + 32).get(getTile().getY());
-           x+=32;
-        }
+        
         if(curTile == null || newTile == null) { return; }
         curTile.removePerson();
         newTile.setPerson(this);

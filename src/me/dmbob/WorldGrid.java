@@ -7,6 +7,7 @@
 package me.dmbob;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Color;
@@ -58,8 +59,8 @@ public class WorldGrid {
             for(int j = 0; j < tiles.get(i).size(); j+=32) {
                 tiles.get(i).get(j).update(gc);
             }
-        }if(gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-            person.act(Action.DOWN);
         }
+        final int pick = new Random().nextInt(Action.values().length);  
+        person.act(Action.values()[pick]);
     }
 }
