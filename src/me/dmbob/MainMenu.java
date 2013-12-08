@@ -31,6 +31,7 @@ public class MainMenu extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         startButton = new GameButton(100, 30, "Start", Color.black);
         quitButton = new GameButton(100, 30, "Quit", Color.black);
+        ConsoleDisplay.append("Hello, welcome to Freewill-Sim, please select an option.");
     }
 
     @Override

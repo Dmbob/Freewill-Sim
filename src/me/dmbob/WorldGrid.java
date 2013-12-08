@@ -22,10 +22,12 @@ import org.newdawn.slick.Input;
 public class WorldGrid {
     private int x, y, width, height;
     private ArrayList<ArrayList<GridTile>> tiles;
-    private Being person;
+    private Being person, ladyPerson;
+    private ArrayList<Being> heldPeople;
     
     public WorldGrid(int x, int y, int width, int height) {
         tiles = new ArrayList<ArrayList<GridTile>>();
+        heldPeople = new ArrayList<Being>();
         this.x = x;
         this.y = y;
         this.width = width;
@@ -36,10 +38,15 @@ public class WorldGrid {
                 tiles.get(i).add(new GridTile(32, 32));
             }
         }
-        person = new Being(16, 16, "m", this, tiles.get(0).get(0));
+  
+        person = new Being(16, 16, "m", "poop", this, tiles.get(0).get(0));
+        ladyPerson = new Being(16, 16, "f", "poop 2", this, tiles.get(32).get(32));
+        heldPeople.add(person);
+        heldPeople.add(ladyPerson);
     }
     
     public void draw(Graphics g) {
+       
         for(int i = 0; i < width; i+=32) {
             for(int j = 0; j < height; j+=32) {
                 tiles.get(i).get(j).draw(i, j, g);
@@ -48,10 +55,31 @@ public class WorldGrid {
         g.setColor(Color.green);
         g.drawRect(x - 1, y - 1, width + 2, height + 2);
         tiles.get(0).get(0).setPerson(person);
+        tiles.get(32).get(32).setPerson(ladyPerson);
     }
     
     public ArrayList<ArrayList<GridTile>> getTiles() {
         return tiles;
+    }
+    
+    public void setX(int x) {
+        this.x = x;
+    }
+    
+    public void setY(int y) {
+        this.y = y;
+    }
+    
+    public int getY() {
+        return y;
+    }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public ArrayList<Being> getPeople() {
+        return heldPeople;
     }
     
     public void update(GameContainer gc) {
@@ -60,7 +88,12 @@ public class WorldGrid {
                 tiles.get(i).get(j).update(gc);
             }
         }
-        final int pick = new Random().nextInt(Action.values().length);  
-        person.act(Action.values()[pick]);
+        
+        if(gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+            person.update(gc);
+            ladyPerson.update(gc);
+        }
+        
+        
     }
 }

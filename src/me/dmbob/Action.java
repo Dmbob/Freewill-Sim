@@ -12,5 +12,7 @@ public enum Action {
     UP,
     DOWN,
     LEFT,
-    RIGHT;
+    RIGHT,
+    WAIT;
+   // KILL;
 }
