@@ -17,21 +17,38 @@ import org.newdawn.slick.Graphics;
 public class GridTile {
     private int x, y, width, height;
     private Being person;
+    private boolean containsPerson;
     
     public GridTile(int width, int height) {
         this.width = width;
         this.height = height;
     }
     
-    public void draw(int x, int y, Graphics g) {
+    public GridTile(int width, int height, int x, int y) {
+        this(width, height);
         this.x = x;
         this.y = y;
+    }
+    
+    public void draw(int x, int y, Graphics g) {
+     //   this.x = x;
+      //  this.y = y;
         g.setColor(Color.white);
         g.fillRect(x, y, 32, 32);
         g.setColor(Color.black);
         g.drawRect(x - 1, y - 1, 32 + 2, 32 + 2);
         if(person != null) {
+            g.pushTransform();
+            g.translate(this.getX()*32, this.getY()*32);
             person.draw(g);
+            g.popTransform();
+        }
+        if(containsPerson) {
+            g.setColor(Color.green);
+            g.drawString("T", x, y);
+        }else if(!containsPerson) {
+            g.setColor(Color.red);
+            g.drawString("F", x, y);
         }
     }
     
@@ -43,8 +60,18 @@ public class GridTile {
         return y;
     }
     
-    public void setPerson(Being b) {
+    public int getWidth() {
+        return width;
+    }
+    
+    public int getHeight() {
+        return height;
+    }
+    
+    public GridTile setPerson(Being b) {
         person = b;
+        containsPerson = (b != null);
+        return this;
     }
     
     public Being getPerson() {
@@ -54,8 +81,8 @@ public class GridTile {
         return null;
     }
     
-    public void removePerson() {
-        this.person = null;
+    public boolean containsPerson() {
+        return containsPerson;
     }
     
     public String toString() {

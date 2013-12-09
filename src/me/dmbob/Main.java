@@ -43,6 +43,8 @@ public class Main extends StateBasedGame {
         scroll.setPreferredSize(new Dimension(400, 800));
         frame.add(scroll, BorderLayout.CENTER);
         
+        scroll.add(display);
+        
         AppGameContainer game = new AppGameContainer(new Main("Freewill Sim"));
         game.setDisplayMode(1024, 768, false);
         game.setTargetFrameRate(60);

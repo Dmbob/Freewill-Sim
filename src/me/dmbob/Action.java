@@ -13,6 +13,6 @@ public enum Action {
     DOWN,
     LEFT,
     RIGHT,
-    WAIT;
-   // KILL;
+    KILL,
+    MATE;
 }

@@ -21,25 +21,25 @@ import org.newdawn.slick.Input;
  * @author Bobby
  */
 public class Being {
-    private int x, y, width, height;
+    private int width, height;
     private String gender;
     private int curX = 0, curY = 0;
     private WorldGrid world;
-    private GridTile curTile;
+    private GridTile curTile, adjacentTile;
     private ContextMenu menu;
-    private boolean mouseOver = false;
+    private boolean mouseOver = false, personFound = false, playerKilled = false, spawnBaby = false, isBaby = false;
     private ArrayList<Action> actions;
     private int pick = 0;
     private String name;
     
-    public Being(int width, int height, String gender, String name, WorldGrid world, GridTile tile) {
+    public Being(int width, int height, String gender, WorldGrid world, GridTile tile) {
         this.width = width;
         this.height = height;
         this.gender = gender;
         this.world = world;
         this.curTile = tile;
-        this.name = name;
-        menu = new ContextMenu(x + 128, y, 128, 256, this);
+        this.curTile.setPerson(this);
+        //menu = new ContextMenu(x + 128, y, 128, 256, this);
         actions = new ArrayList<Action>();
         for(int a = 0; a < Action.values().length; a++) {
            actions.add(Action.values()[a]);
@@ -51,9 +51,11 @@ public class Being {
             g.setColor(Color.blue);
         }else if(gender.equalsIgnoreCase("f")) {
             g.setColor(Color.red);
+        }else if(gender.equalsIgnoreCase("b")) {
+            isBaby = true;
         }
-        g.fillRect(curTile.getX() + width/2, curTile.getY() + height/2, width, height);
-        menu.draw(g);
+        g.fillRect(curTile.getWidth()/2 - this.width/2, curTile.getHeight()/2 - this.height/2, width, height);
+       // menu.draw(g);
     }
     
     public int getPick() {
@@ -64,49 +66,91 @@ public class Being {
         return actions;
     }
 
-    public void move(final String dir) {
-        GridTile newTile = null;
-        try {
-            if(dir.equalsIgnoreCase("up")) {
-                newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() - 32);
-            }
-            if(dir.equalsIgnoreCase("down")) {
-                newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() + 32); 
-            }
-            if(dir.equalsIgnoreCase("left")) {
-                newTile = world.getTiles().get(getTile().getX() - 32).get(getTile().getY());
-            }
-            if(dir.equalsIgnoreCase("right")) {
-                newTile = world.getTiles().get(getTile().getX() + 32).get(getTile().getY());
-            }
-        }catch(Exception ex) {
-             newTile = null;
-        }
-        
-        if(curTile == null || newTile == null) { return; }
-        if(curTile.getPerson().equals(Being.class) || newTile.equals(Being.class)) {
-            ConsoleDisplay.append("OH FUCK");
-            return;
-        }
-        curTile.removePerson();
-        newTile.setPerson(this);
-        curTile = newTile; 
+    public void move(Action a) {
+        adjacentTile = getAdjacentTile(a);
+        System.out.println(adjacentTile);
+        if(curTile == null || adjacentTile == null) { return; }
+        //if(curTile.containsPerson() || newTile.containsPerson()) {return; }
+        //curTile.removePerson();
+        curTile.setPerson(null);
+        curTile = adjacentTile.setPerson(this);
     }
     
+    public void actRandomly() {
+        Action current = actions.get((int) (Math.random()*actions.size()));
+        this.act(current);
+        actions.add(current);
+        System.out.println(current);
+        System.out.println(actions.size());
+    }
+    
+    public GridTile getAdjacentTile(Action a) {
+        GridTile newTile = null;
+        try {
+            if(a.equals(Action.UP)) {
+                newTile = world.getTiles().get(getX()).get(getY()-1);
+               // newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() - 32);
+            }
+            if(a.equals(Action.DOWN)) {
+                newTile = world.getTiles().get(getX()).get(getY()+1);
+                //newTile = world.getTiles().get(getTile().getX()).get(getTile().getY() + 32); 
+            }
+            if(a.equals(Action.LEFT)) {
+                newTile = world.getTiles().get(getX()-1).get(getY());
+                //newTile = world.getTiles().get(getTile().getX() - 32).get(getTile().getY());
+            }
+            if(a.equals(Action.RIGHT)) {
+                newTile = world.getTiles().get(getX()+1).get(getY());
+                //newTile = world.getTiles().get(getTile().getX() + 32).get(getTile().getY());
+            }
+        }catch(Exception ex) {
+            //ex.printStackTrace();
+            newTile = curTile;
+             //newTile = null;
+        }
+        return newTile;
+    }
+    
+    public boolean playerKilled() {
+        return playerKilled;
+    }
+    
+    public boolean makeBaby() {
+        return spawnBaby;
+    }
+
     public void act(Action a) {
+        //curTile.setPerson(null);
+        //curTile.removePerson();
         
-        if(a.equals(Action.UP)) {
-            move("up");
+        if(a.equals(Action.UP) || a.equals(Action.DOWN) || a.equals(Action.LEFT) || a.equals(Action.RIGHT)) {
+            move(a);
         }
-        if(a.equals(Action.DOWN)) {
-            move("down");
+        
+        for (Action dir : MainGame.MOVE_ACTIONS) {
+            if(getAdjacentTile(dir) != null) {
+                Being person = getAdjacentTile(dir).getPerson();
+                if(person != null && person != this) {
+                    System.out.println("Hello Person " + name + ", How are you?"); 
+                    personFound = true;
+                }
+                if(personFound && a.equals(Action.KILL)) {
+                    try {
+                    person.getTile().setPerson(null);
+                    }catch (NullPointerException ex) {
+                        System.out.println("Player Killed");
+                    }
+                    playerKilled = true;
+                }
+                if(personFound && a.equals(Action.MATE) && !isBaby) {
+                    spawnBaby = true;
+                }else {
+                    spawnBaby = false;
+                }
+            }
         }
-        if(a.equals(Action.LEFT)) {
-            move("left");
-        }
-        if(a.equals(Action.RIGHT)) {
-            move("right");
-        }
+        
+        
         //if(a.equals(Action.KILL)) {
             //world.getPeople().get((int)(Math.random()*world.getPeople().size())).getTile().removePerson();
         //}
@@ -114,12 +158,20 @@ public class Being {
         
     }
     
+    public int getRealX() {
+        return curTile.getX()*32;
+    }
+    
+    public int getRealY() {
+        return curTile.getY()*32;
+    }
+    
     public int getX() {
-        return x;
+        return curTile.getX();
     }
     
     public int getY() {
-        return y;
+        return curTile.getY();
     }
     
     public GridTile getTile() {
@@ -129,13 +181,13 @@ public class Being {
     public void update(GameContainer gc) {
         int pick = (int) (Math.random()*actions.size());
         Action prev;
-        act(actions.get(pick));
+        //act(actions.get(pick));
         prev = actions.get(pick);
         actions.add(prev);
-        ConsoleDisplay.append("Player " + name + " Action: " + prev.toString());
+       // ConsoleDisplay.append("Player " + name + " Action: " + prev.toString());
     }
     
     public String toString() {
-        return x + ", " + y;
+        return "name: " + this.name + ", " + getRealX() + ", " + getRealY();
     }
 }

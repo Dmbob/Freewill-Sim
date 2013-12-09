@@ -4,6 +4,7 @@
  */
 package me.dmbob;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Color;
@@ -23,9 +24,15 @@ public class MainGame extends BasicGameState{
     private Camera camera;
     private int playerX = 0, playerY = 0;
     private GameButton actButton;
+    public final static ArrayList<Action> MOVE_ACTIONS = new ArrayList<Action>();
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+        MOVE_ACTIONS.add(Action.UP);
+        MOVE_ACTIONS.add(Action.DOWN);
+        MOVE_ACTIONS.add(Action.LEFT);
+        MOVE_ACTIONS.add(Action.RIGHT);
+        
         world = new WorldGrid(0, 0, 512, 512);
         camera = new Camera(-50, -50);
         actButton = new GameButton(100, 30, "Act", Color.black);
