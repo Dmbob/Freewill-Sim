@@ -18,7 +18,7 @@ import org.newdawn.slick.Input;
 public class Camera {
     private int CAM_SPEED = 10;
     private float scale = 1;
-    private int x, y;
+    private static int x, y;
     private boolean mouseTrans;
     
     public Camera(int x, int y) {
@@ -30,6 +30,14 @@ public class Camera {
     public void place(Graphics g) {
         g.translate(-x, -y);
         g.scale(scale, scale);
+    }
+    
+    public static int getTranslatedX() {
+        return x;
+    }
+    
+    public static int getTranslatedY() {
+        return y;
     }
     
     public void update(GameContainer gc) {

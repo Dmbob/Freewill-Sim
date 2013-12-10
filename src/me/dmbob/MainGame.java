@@ -23,7 +23,6 @@ public class MainGame extends BasicGameState{
     private WorldGrid world;
     private Camera camera;
     private int playerX = 0, playerY = 0;
-    private GameButton actButton;
     public final static ArrayList<Action> MOVE_ACTIONS = new ArrayList<Action>();
 
     @Override
@@ -35,19 +34,11 @@ public class MainGame extends BasicGameState{
         
         world = new WorldGrid(0, 0, 512, 512);
         camera = new Camera(-50, -50);
-        actButton = new GameButton(100, 30, "Act", Color.black);
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-       /*g.setClip(world.getX(), world.getY(), 1024, 1024);
-       g.setColor(Color.black);
-       g.fillRect(0, gc.getHeight() - 50, gc.getWidth(), 50);
-       g.setColor(Color.white);
-       g.drawRect(0, gc.getHeight() - 51, gc.getWidth(), 49);
-       actButton.draw(30, gc.getHeight() - 45, g);
-        */
-       camera.place(g);
+       //camera.place(g);
        world.draw(g);
     }
 
@@ -57,9 +48,8 @@ public class MainGame extends BasicGameState{
             s.enterState(1);
         }
         
-        camera.update(gc);
+        //camera.update(gc);
         world.update(gc); 
-        actButton.update(gc);
         gc.getInput().clearKeyPressedRecord();
     }
    

@@ -21,16 +21,16 @@ import org.newdawn.slick.Input;
  * @author Bobby
  */
 public class Being {
-    private int width, height;
+    private int width, height, actCount;
     private String gender;
     private int curX = 0, curY = 0;
     private WorldGrid world;
     private GridTile curTile, adjacentTile;
-    private ContextMenu menu;
     private boolean mouseOver = false, personFound = false, playerKilled = false, spawnBaby = false, isBaby = false;
     private ArrayList<Action> actions;
     private int pick = 0;
     private String name;
+    private Action prev;
     
     public Being(int width, int height, String gender, WorldGrid world, GridTile tile) {
         this.width = width;
@@ -47,19 +47,25 @@ public class Being {
     }
  
     public void draw(Graphics g) {
-        if(gender.equalsIgnoreCase("m")) {
-            g.setColor(Color.blue);
-        }else if(gender.equalsIgnoreCase("f")) {
-            g.setColor(Color.red);
-        }else if(gender.equalsIgnoreCase("b")) {
-            isBaby = true;
-        }
-        g.fillRect(curTile.getWidth()/2 - this.width/2, curTile.getHeight()/2 - this.height/2, width, height);
+        if(!playerKilled) {
+            if(gender.equalsIgnoreCase("m")) {
+                g.setColor(Color.blue);
+            }else if(gender.equalsIgnoreCase("f")) {
+                g.setColor(Color.red);
+            }else if(gender.equalsIgnoreCase("b")) {
+                isBaby = true;
+            }
+            g.fillRect(curTile.getWidth()/2 - this.width/2, curTile.getHeight()/2 - this.height/2, width, height);
        // menu.draw(g);
+        }
     }
     
     public int getPick() {
         return pick;
+    }
+    
+    public String getLastAction() {
+        return prev.toString();
     }
     
     public ArrayList<Action> getActions() {
@@ -77,10 +83,10 @@ public class Being {
     }
     
     public void actRandomly() {
-        Action current = actions.get((int) (Math.random()*actions.size()));
-        this.act(current);
-        actions.add(current);
-        System.out.println(current);
+        prev = actions.get((int) (Math.random()*actions.size()));
+        this.act(prev);
+        actions.add(prev);
+        System.out.println(prev);
         System.out.println(actions.size());
     }
     
@@ -122,7 +128,13 @@ public class Being {
     public void act(Action a) {
         //curTile.setPerson(null);
         //curTile.removePerson();
-        
+        actCount++;
+        if(actCount > 18 && gender.equals("b")) {
+            width = 16;
+            height = 16;
+            gender = "m";
+            ConsoleDisplay.append("A baby has grown up");
+        }
         if(a.equals(Action.UP) || a.equals(Action.DOWN) || a.equals(Action.LEFT) || a.equals(Action.RIGHT)) {
             move(a);
         }
@@ -138,7 +150,6 @@ public class Being {
                     try {
                     person.getTile().setPerson(null);
                     }catch (NullPointerException ex) {
-                        System.out.println("Player Killed");
                     }
                     playerKilled = true;
                 }
@@ -179,12 +190,13 @@ public class Being {
     }
     
     public void update(GameContainer gc) {
-        int pick = (int) (Math.random()*actions.size());
+       /* int pick = (int) (Math.random()*actions.size());
         Action prev;
         //act(actions.get(pick));
         prev = actions.get(pick);
         actions.add(prev);
        // ConsoleDisplay.append("Player " + name + " Action: " + prev.toString());
+               */
     }
     
     public String toString() {

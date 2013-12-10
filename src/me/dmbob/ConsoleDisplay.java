@@ -10,9 +10,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import org.newdawn.slick.Graphics;
 
 /**
  *
@@ -20,6 +22,7 @@ import javax.swing.JTextArea;
  */
 public class ConsoleDisplay extends JPanel {
     private static JTextArea text;
+    private ArrayList<String> textArray;
     
     public ConsoleDisplay() {
         this.setLayout(new BorderLayout());
@@ -41,6 +44,10 @@ public class ConsoleDisplay extends JPanel {
         if(text.getLineCount() > Integer.MAX_VALUE) {
             text.setText("");
         }
+    }
+    
+    public static void clear() {
+        text.removeAll();
     }
     
     public JTextArea getText() {

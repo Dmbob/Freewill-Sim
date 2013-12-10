@@ -9,6 +9,7 @@ package me.dmbob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 /**
  *
@@ -17,7 +18,8 @@ import org.newdawn.slick.Graphics;
 public class GridTile {
     private int x, y, width, height;
     private Being person;
-    private boolean containsPerson;
+    private boolean containsPerson, clicked;
+    private ContextMenu menu;
     
     public GridTile(int width, int height) {
         this.width = width;
@@ -28,6 +30,7 @@ public class GridTile {
         this(width, height);
         this.x = x;
         this.y = y;
+        menu = new ContextMenu(this);
     }
     
     public void draw(int x, int y, Graphics g) {
@@ -71,6 +74,7 @@ public class GridTile {
     public GridTile setPerson(Being b) {
         person = b;
         containsPerson = (b != null);
+        //ConsoleDisplay.append("X: " + x*32 + ", Y: " + y*32);
         return this;
     }
     
@@ -85,10 +89,33 @@ public class GridTile {
         return containsPerson;
     }
     
+    public boolean isClicked() {
+        return clicked;
+    }
+    
     public String toString() {
         return "[Being Location: " + person + ", Tile Location: " + x +", " + y + "]";
     }
     
     public void update(GameContainer gc) {
+        if(person != null) {
+            if(person.playerKilled()) {
+                containsPerson = false;
+            }
+        }
+        /*if(gc.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+            if(containsPerson()) {
+               ConsoleDisplay.append("Current Action: " + person.getLastAction());
+            }else {
+                ConsoleDisplay.clear();
+                ConsoleDisplay.append("No Person Here");
+            }
+        }*/
+        
+        if(((gc.getInput().getMouseX() >= (x*32) && gc.getInput().getMouseX() <= (x*32) + width) &&
+                (gc.getInput().getMouseY() >= (y*32) && gc.getInput().getMouseY() <= (y*32) + height)) && containsPerson) {
+             
+        }
+        
     }
 }

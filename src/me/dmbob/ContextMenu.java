@@ -6,54 +6,28 @@
 
 package me.dmbob;
 
-import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-
 /**
  *
  * @author Bobby
  */
 public class ContextMenu {
-    private int x, y, width, height;
-    private boolean visible;
+    private GridTile tile;
     private Being person;
+    private boolean visible = false;
     
-    public ContextMenu(int x, int y, int width, int height, Being b) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        visible = false;
-        person = b;
-    }
-    
-    public void draw(Graphics g) {
-        if(visible) {
-            g.setColor(Color.black);
-            g.fillRect(x, y, width, height);
-        }
-    }
-    
-    public Being getPerson() {
-        return person;
-    }
-    
-    public int getX() {
-        return x;
-    }
-    
-    public int getY() {
-        return y;
+    public ContextMenu(GridTile tile) {
+        this.tile = tile;
+        this.person = tile.getPerson();
     }
     
     public void setVisible(boolean b) {
-        visible = b;
-    }
-    
-    public void update(GameContainer gc) {
-        
+        if(b == true) {
+            ConsoleDisplay.clear();
+            if(person != null) {
+                 
+            }
+        }else {
+            ConsoleDisplay.clear();
+        }
     }
 }

@@ -20,7 +20,7 @@ import org.newdawn.slick.Input;
  * @author Bobby
  */
 public class WorldGrid {
-    private int x, y, width, height;
+    private static int x, y, width, height;
     private ArrayList<ArrayList<GridTile>> tiles;
     private Being person, ladyPerson;
     private ArrayList<Being> heldPeople;
@@ -61,6 +61,14 @@ public class WorldGrid {
        // tiles.get(32).get(32).setPerson(ladyPerson);
     }
     
+    public static int getWidth() {
+        return width;
+    }
+    
+    public static int getHeight() {
+        return height;
+    }
+    
     public ArrayList<ArrayList<GridTile>> getTiles() {
         return tiles;
     }
@@ -88,13 +96,22 @@ public class WorldGrid {
     public void update(GameContainer gc) {
         if(gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
             for(int i = 0; i < heldPeople.size(); i++) {
+                 
                 heldPeople.get(i).actRandomly();
+                heldPeople.get(i).update(gc);
                 if(heldPeople.get(i).makeBaby()) {
                     heldPeople.add(new Being(8, 8, "b", this, heldPeople.get(i).getAdjacentTile(Action.DOWN)));
+                    ConsoleDisplay.append("A new baby has been born");
                 }
-                if(heldPeople.get(i).playerKilled()) {
+                 if(heldPeople.get(i).playerKilled()) {
                     heldPeople.remove(i);
+                    ConsoleDisplay.append("A person has been killed");
                 }
+            }
+        }
+        for (ArrayList<GridTile> list : tiles) {
+            for (GridTile tile : list) {
+                tile.update(gc);
             }
         }
     }
