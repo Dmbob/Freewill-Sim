@@ -7,9 +7,6 @@
 package me.dmbob;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,7 +19,6 @@ import org.newdawn.slick.Input;
 public class WorldGrid {
     private static int x, y, width, height;
     private ArrayList<ArrayList<GridTile>> tiles;
-    private Being person, ladyPerson;
     private ArrayList<Being> heldPeople;
     
     public WorldGrid(int x, int y, int width, int height) {
@@ -38,18 +34,12 @@ public class WorldGrid {
                 tiles.get(i).add(new GridTile(32, 32, i, j));
             }
         }
-        for(int p = 0; p < 10; p++) {
+        for(int p = 0; p < 15; p++) {
             heldPeople.add(new Being(16, 16, "m", this, tiles.get((int) (Math.random()*tiles.get(p).size())).get((int) (Math.random()*tiles.size()))));
         }
     }
     
     public void draw(Graphics g) {
-       
-       /* for(int i = 0; i < width/32; i+=32) {
-            for(int j = 0; j < height/32; j+=32) {
-                tiles.get(i).get(j).draw(i, j, g);
-            }
-        }*/
         for (ArrayList<GridTile> list : tiles) {
             for (GridTile tile : list) {
                 tile.draw(tile.getX()*32, tile.getY()*32, g);
@@ -57,8 +47,6 @@ public class WorldGrid {
         }
         g.setColor(Color.green);
         g.drawRect(x - 1, y - 1, width + 2, height + 2);
-       // tiles.get(0).get(0).setPerson(person);
-       // tiles.get(32).get(32).setPerson(ladyPerson);
     }
     
     public static int getWidth() {
@@ -98,14 +86,15 @@ public class WorldGrid {
             for(int i = 0; i < heldPeople.size(); i++) {
                  
                 heldPeople.get(i).actRandomly();
-                heldPeople.get(i).update(gc);
                 if(heldPeople.get(i).makeBaby()) {
                     heldPeople.add(new Being(8, 8, "b", this, heldPeople.get(i).getAdjacentTile(Action.DOWN)));
-                    ConsoleDisplay.append("A new baby has been born");
+                    Being.born++;
+                    ConsoleDisplay.append("A person has been born, that's a total of " + Being.born + " born.");
                 }
                  if(heldPeople.get(i).playerKilled()) {
                     heldPeople.remove(i);
-                    ConsoleDisplay.append("A person has been killed");
+                    Being.killed++;
+                    ConsoleDisplay.append("A person has been killed, that's " + Being.killed + " dead.");
                 }
             }
         }

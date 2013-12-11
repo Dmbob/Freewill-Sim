@@ -8,13 +8,10 @@ package me.dmbob;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import org.newdawn.slick.Graphics;
 
 /**
  *
@@ -33,12 +30,12 @@ public class ConsoleDisplay extends JPanel {
         text.setEditable(false);
         text.setBackground(Color.BLACK);
         text.setFont(new Font("Lucida Console", Font.PLAIN, 14));
-        text.setForeground(Color.WHITE);
         
         this.add(text, BorderLayout.CENTER);
     }
     
     public static void append(String s) {
+        text.setForeground(Color.WHITE);
         text.append(s + "\n");
         text.setCaretPosition(text.getDocument().getLength());
         if(text.getLineCount() > Integer.MAX_VALUE) {
@@ -46,8 +43,13 @@ public class ConsoleDisplay extends JPanel {
         }
     }
     
+    public static void instruct(String s) {
+        text.setForeground(Color.yellow);
+        text.append(s + "\n");
+    }
+    
     public static void clear() {
-        text.removeAll();
+        text.setText("");
     }
     
     public JTextArea getText() {

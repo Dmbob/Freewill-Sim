@@ -5,9 +5,6 @@
 package me.dmbob;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -21,9 +18,8 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class MainGame extends BasicGameState{
     private WorldGrid world;
-    private Camera camera;
-    private int playerX = 0, playerY = 0;
     public final static ArrayList<Action> MOVE_ACTIONS = new ArrayList<Action>();
+    private ContextMenu menu;
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -33,13 +29,13 @@ public class MainGame extends BasicGameState{
         MOVE_ACTIONS.add(Action.RIGHT);
         
         world = new WorldGrid(0, 0, 512, 512);
-        camera = new Camera(-50, -50);
+        menu = new ContextMenu(512, 0, 100, gc.getHeight());
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-       //camera.place(g);
        world.draw(g);
+       menu.draw(g);
     }
 
     @Override
@@ -48,9 +44,10 @@ public class MainGame extends BasicGameState{
             s.enterState(1);
         }
         
-        //camera.update(gc);
         world.update(gc); 
+        menu.update(gc);
         gc.getInput().clearKeyPressedRecord();
+        gc.getInput().clearMousePressedRecord();
     }
    
     

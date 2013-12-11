@@ -78,9 +78,14 @@ public class MainMenu extends BasicGameState {
         
         if(startButton.isClicked()) {
             s.enterState(2);
+        ConsoleDisplay.clear();
+        ConsoleDisplay.instruct("Welcome to the sim, press space to watch, or"
+                + " select a \ncharacter and hit a button to make them do something.");
         }else if(quitButton.isClicked()) {
             gc.exit();
         }
+        gc.getInput().clearKeyPressedRecord();
+        gc.getInput().clearMousePressedRecord();
     }
     
     @Override

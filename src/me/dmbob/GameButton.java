@@ -33,7 +33,7 @@ public class GameButton {
         g.setColor(color);
         g.fillRect(x, y, width, height);
         g.setColor(Color.white);
-        g.drawString(name, (x) + g.getFont().getWidth(name)/2, y + g.getFont().getHeight(name)/2);
+        g.drawString(name, (x), y + g.getFont().getHeight(name)/2);
         if(mouseOver) {
             g.setColor(Color.white);
             g.drawRect(x - 1, y - 1, width + 2, height + 2);
@@ -50,11 +50,19 @@ public class GameButton {
      
         if(mouseOver && gc.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
             clicked = true;
-        }else {
+        }else{
             clicked = false;
         }
         gc.getInput().clearMousePressedRecord();
         gc.getInput().clearKeyPressedRecord();
+    }
+    
+    public float getX(){
+        return x;
+    }
+    
+    public float getY() {
+        return y;
     }
     
     public float getWidth() {

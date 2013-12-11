@@ -9,9 +9,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -29,10 +27,10 @@ public class Main extends StateBasedGame {
     
     public static void main(String[] args) throws SlickException{    
         ConsoleDisplay display = new ConsoleDisplay();
-        display.setBounds(0, 0, 400, 800);
+        display.setBounds(0, 0, 500, 800);
         
         JFrame frame = new JFrame("Display");
-        frame.setBounds(0, 0, 400, 800);
+        frame.setBounds(0, 0, 500, 800);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
@@ -45,8 +43,8 @@ public class Main extends StateBasedGame {
         
         scroll.add(display);
         
-        AppGameContainer game = new AppGameContainer(new Main("Freewill Sim"));
-        game.setDisplayMode(512, 512, false);
+        AppGameContainer game = new AppGameContainer(new Main("Freewill-Sim"));
+        game.setDisplayMode(600, 512, false);
         game.setTargetFrameRate(60);
         game.setSmoothDeltas(true);
         game.start();
