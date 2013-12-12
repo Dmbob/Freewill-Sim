@@ -34,7 +34,7 @@ public class WorldGrid {
                 tiles.get(i).add(new GridTile(32, 32, i, j));
             }
         }
-        for(int p = 0; p < 15; p++) {
+        for(int p = 0; p < 10; p++) {
             heldPeople.add(new Being(16, 16, "m", this, tiles.get((int) (Math.random()*tiles.get(p).size())).get((int) (Math.random()*tiles.size()))));
         }
     }
@@ -87,16 +87,20 @@ public class WorldGrid {
                  
                 heldPeople.get(i).actRandomly();
                 if(heldPeople.get(i).makeBaby()) {
+                    heldPeople.get(i).setMakeBaby(false);
+                    if(heldPeople.size() > 30) { continue; }
                     heldPeople.add(new Being(8, 8, "b", this, heldPeople.get(i).getAdjacentTile(Action.DOWN)));
                     Being.born++;
                     ConsoleDisplay.append("A person has been born, that's a total of " + Being.born + " born.");
                 }
                  if(heldPeople.get(i).playerKilled()) {
-                    heldPeople.remove(i);
+                    heldPeople.get(i).setHasKilled(false);
+                    heldPeople.remove(heldPeople.get(i).getKilled());
                     Being.killed++;
                     ConsoleDisplay.append("A person has been killed, that's " + Being.killed + " dead.");
                 }
             }
+            
         }
         for (ArrayList<GridTile> list : tiles) {
             for (GridTile tile : list) {

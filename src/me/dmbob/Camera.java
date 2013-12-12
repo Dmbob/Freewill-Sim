@@ -19,12 +19,10 @@ public class Camera {
     private int CAM_SPEED = 10;
     private float scale = 1;
     private static int x, y;
-    private boolean mouseTrans;
     
     public Camera(int x, int y) {
         this.x = x;
         this.y = y;
-        mouseTrans = false;
     }
     
     public void place(Graphics g) {

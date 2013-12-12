@@ -1,7 +1,6 @@
 package me.dmbob;
 
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,7 +73,6 @@ public class MainMenu extends BasicGameState {
         timing.start();
         startButton.update(gc);
         quitButton.update(gc);
-        int num = new Random().nextInt(Action.values().length);
         
         if(startButton.isClicked()) {
             s.enterState(2);

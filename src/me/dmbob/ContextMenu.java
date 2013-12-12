@@ -19,12 +19,14 @@ public class ContextMenu {
     private GridTile tile;
     private Being person;
     private GameButton leftButton, rightButton, upButton, downButton, killButton, mateButton;
+    private WorldGrid world;
     
-    public ContextMenu(int x, int y, int width, int height) {
+    public ContextMenu(int x, int y, int width, int height, WorldGrid world) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.world = world;
         leftButton = new GameButton(width, 30, "Left", Color.gray);
         rightButton = new GameButton(width, 30, "Right", Color.gray);
         upButton = new GameButton(width, 30, "Up", Color.gray);
@@ -76,6 +78,7 @@ public class ContextMenu {
             ConsoleDisplay.append("Killing...");
         }else if(mateButton.isClicked() && GridTile.getSelected() != null) {
             person.act(Action.MATE);
+            world.getPeople().add(new Being(8, 8, "b", world, person.getAdjacentTile(Action.DOWN)));
             ConsoleDisplay.append("Mating...");
         }
         gc.getInput().clearMousePressedRecord();

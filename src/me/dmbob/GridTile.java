@@ -101,7 +101,6 @@ public class GridTile {
     }
     
     public void update(GameContainer gc) { 
-         int count = 0;
         if(((gc.getInput().getMouseX() >= (x*32) && gc.getInput().getMouseX() <= (x*32) + width) &&
                 (gc.getInput().getMouseY() >= (y*32) && gc.getInput().getMouseY() <= (y*32) + height)) &&
                         (gc.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON))) {

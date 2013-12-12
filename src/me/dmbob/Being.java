@@ -3,7 +3,6 @@ package me.dmbob;
 
 import java.util.ArrayList;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 /*
@@ -16,8 +15,8 @@ import org.newdawn.slick.Graphics;
  * @author Bobby
  */
 public class Being {
-    public static int killed = 0, born = 0, grown = 0;
-    private int width, height, actCount, babyCount;
+    public static int killed = 0, born = 0, grown = 0, steps = 0;
+    private int width, height, actCount;
     private String gender;
     private WorldGrid world;
     private GridTile curTile, adjacentTile;
@@ -27,6 +26,7 @@ public class Being {
     private int pick = 0;
     private String name;
     private Action prev;
+    private Being killedEnt;
     
     public Being(int width, int height, String gender, WorldGrid world, GridTile tile) {
         this.width = width;
@@ -42,7 +42,14 @@ public class Being {
     }
  
     public void draw(Graphics g) {
-        if(!playerKilled) {
+            if(playerKilled) {
+                g.setColor(Color.green);
+                g.fillRect(0, 0, 5, 5);
+            }
+            if(spawnBaby) {
+                g.setColor(Color.pink);
+                g.fillRect(0, 0, 5, 5);
+            }
             if(gender.equalsIgnoreCase("m")) {
                 g.setColor(Color.blue);
             }else if(gender.equalsIgnoreCase("f")) {
@@ -51,7 +58,6 @@ public class Being {
                 isBaby = true;
             }
             g.fillRect(curTile.getWidth()/2 - this.width/2, curTile.getHeight()/2 - this.height/2, width, height);
-        }
     }
     
     public int getPick() {
@@ -115,13 +121,23 @@ public class Being {
         return playerKilled;
     }
     
+    public void setHasKilled(boolean killed) {
+        playerKilled = killed;
+    }
+    
+    public Being getKilled() {
+        return killedEnt;
+    }
+    
     public void act(Action a) {
         acted = true;
         actCount++;
+        steps++;
         if(actCount > 18 && gender.equals("b")) {
             width = 16;
             height = 16;
             gender = "m";
+            isBaby = false; 
             grown++;
             ConsoleDisplay.append("A baby has grown up, that's a total of " + grown );
         }
@@ -140,21 +156,23 @@ public class Being {
                 }
                 if(personFound && a.equals(Action.KILL) && person != this) {
                     try {
+                        killedEnt = person;
                         person.getTile().setPerson(null);
+                        playerKilled = true;
                     } catch (NullPointerException ex) { }
+                  
                 }
                 if(personFound && a.equals(Action.MATE) && !isBaby && !hadBaby) {
-                    spawnBaby = true;
-                    babyCount++;
+                    spawnBaby = true;  
                 }else {
                     spawnBaby = false;
-                }
-                if(babyCount > 4) {
-                    hadBaby = true;
-                    playerKilled = true;
-                }
+                } 
             }
         }     
+    }
+    
+    public void setMakeBaby(boolean bool) {
+        spawnBaby = bool;
     }
     
     public int getRealX() {
@@ -178,6 +196,6 @@ public class Being {
     }
     
     public String toString() {
-        return "name: " + this.name + ", " + getRealX() + ", " + getRealY();
+        return " | name: " + this.name + ", " + getRealX() + ", " + getRealY() + " | ";
     }
 }

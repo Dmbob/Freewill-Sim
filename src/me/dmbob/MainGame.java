@@ -29,7 +29,7 @@ public class MainGame extends BasicGameState{
         MOVE_ACTIONS.add(Action.RIGHT);
         
         world = new WorldGrid(0, 0, 512, 512);
-        menu = new ContextMenu(512, 0, 100, gc.getHeight());
+        menu = new ContextMenu(512, 0, 100, gc.getHeight(), world);
     }
 
     @Override
