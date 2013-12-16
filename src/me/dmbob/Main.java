@@ -47,6 +47,7 @@ public class Main extends StateBasedGame {
         game.setDisplayMode(600, 512, false);
         game.setTargetFrameRate(60);
         game.setSmoothDeltas(true);
+        game.setShowFPS(false);
         game.start();
     }
 

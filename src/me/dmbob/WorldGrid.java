@@ -90,14 +90,12 @@ public class WorldGrid {
                     heldPeople.get(i).setMakeBaby(false);
                     if(heldPeople.size() > 30) { continue; }
                     heldPeople.add(new Being(8, 8, "b", this, heldPeople.get(i).getAdjacentTile(Action.DOWN)));
-                    Being.born++;
-                    ConsoleDisplay.append("A person has been born, that's a total of " + Being.born + " born.");
+                    ConsoleDisplay.append("A new person has been born.");
                 }
                  if(heldPeople.get(i).playerKilled()) {
                     heldPeople.get(i).setHasKilled(false);
                     heldPeople.remove(heldPeople.get(i).getKilled());
-                    Being.killed++;
-                    ConsoleDisplay.append("A person has been killed, that's " + Being.killed + " dead.");
+                    ConsoleDisplay.append("A person has been killed.");
                 }
             }
             

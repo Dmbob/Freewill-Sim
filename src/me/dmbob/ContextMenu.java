@@ -75,11 +75,13 @@ public class ContextMenu {
             ConsoleDisplay.append("Moving Down...");
         }else if(killButton.isClicked() && GridTile.getSelected() != null) {
             person.act(Action.KILL);
-            ConsoleDisplay.append("Killing...");
+            GridTile.selected = null;
+            ConsoleDisplay.append("Attempting to kill.");
         }else if(mateButton.isClicked() && GridTile.getSelected() != null) {
             person.act(Action.MATE);
             world.getPeople().add(new Being(8, 8, "b", world, person.getAdjacentTile(Action.DOWN)));
-            ConsoleDisplay.append("Mating...");
+            GridTile.selected = null;
+            ConsoleDisplay.append("Attempting to make a baby.");
         }
         gc.getInput().clearMousePressedRecord();
     }

@@ -9,7 +9,6 @@ package me.dmbob;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -19,7 +18,6 @@ import javax.swing.JTextArea;
  */
 public class ConsoleDisplay extends JPanel {
     private static JTextArea text;
-    private ArrayList<String> textArray;
     
     public ConsoleDisplay() {
         this.setLayout(new BorderLayout());

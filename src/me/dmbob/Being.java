@@ -15,7 +15,7 @@ import org.newdawn.slick.Graphics;
  * @author Bobby
  */
 public class Being {
-    public static int killed = 0, born = 0, grown = 0, steps = 0;
+    public static int steps = 0;
     private int width, height, actCount;
     private String gender;
     private WorldGrid world;
@@ -27,6 +27,7 @@ public class Being {
     private String name;
     private Action prev;
     private Being killedEnt;
+    private Being foundPerson;
     
     public Being(int width, int height, String gender, WorldGrid world, GridTile tile) {
         this.width = width;
@@ -42,14 +43,6 @@ public class Being {
     }
  
     public void draw(Graphics g) {
-            if(playerKilled) {
-                g.setColor(Color.green);
-                g.fillRect(0, 0, 5, 5);
-            }
-            if(spawnBaby) {
-                g.setColor(Color.pink);
-                g.fillRect(0, 0, 5, 5);
-            }
             if(gender.equalsIgnoreCase("m")) {
                 g.setColor(Color.blue);
             }else if(gender.equalsIgnoreCase("f")) {
@@ -138,8 +131,7 @@ public class Being {
             height = 16;
             gender = "m";
             isBaby = false; 
-            grown++;
-            ConsoleDisplay.append("A baby has grown up, that's a total of " + grown );
+            ConsoleDisplay.append("A baby has grown up");
         }
         
         if(a.equals(Action.UP) || a.equals(Action.DOWN) || a.equals(Action.LEFT) || a.equals(Action.RIGHT)) {
@@ -149,18 +141,17 @@ public class Being {
         
         for (Action dir : MainGame.MOVE_ACTIONS) {
             if(getAdjacentTile(dir) != null) {
-                Being person = getAdjacentTile(dir).getPerson();
-                if(person != null && person != this) {
+                foundPerson = getAdjacentTile(dir).getPerson();
+                if(foundPerson != null && foundPerson != this) {
                     System.out.println("Hello Person " + name + ", How are you?"); 
                     personFound = true;
                 }
-                if(personFound && a.equals(Action.KILL) && person != this) {
+                if(personFound && a.equals(Action.KILL) && foundPerson != this) {
                     try {
-                        killedEnt = person;
-                        person.getTile().setPerson(null);
+                        killedEnt = foundPerson;
+                        foundPerson.getTile().setPerson(null);
                         playerKilled = true;
                     } catch (NullPointerException ex) { }
-                  
                 }
                 if(personFound && a.equals(Action.MATE) && !isBaby && !hadBaby) {
                     spawnBaby = true;  
@@ -169,6 +160,14 @@ public class Being {
                 } 
             }
         }     
+    }
+    
+    public Being personFound() {
+        if(foundPerson!=null) {
+            return foundPerson;
+        }else {
+            return null;
+        }
     }
     
     public void setMakeBaby(boolean bool) {

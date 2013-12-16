@@ -17,7 +17,7 @@ import org.newdawn.slick.Input;
  */
 public class GridTile {
  //  private static int gId = 1;
-    private static GridTile selected;
+    public static GridTile selected;
     private int x, y, width, height, id;
     private Being person;
     private boolean containsPerson;
@@ -26,7 +26,6 @@ public class GridTile {
     public GridTile(int width, int height) {
         this.width = width;
         this.height = height;
-      //  id = gId++;
     }
     
     public GridTile(int width, int height, int x, int y) {
@@ -40,8 +39,6 @@ public class GridTile {
     }
     
     public void draw(int x, int y, Graphics g) {
-     //   this.x = x;
-      //  this.y = y;
         g.setColor(Color.white);
         g.fillRect(x, y, 32, 32);
         g.setColor(Color.black);
